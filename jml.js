@@ -1,20 +1,47 @@
 document.addEventListener("DOMContentLoaded", async () => {
 	
-	for (let get of document.querySelectorAll("[get]")) {
-		
-		let data = await fetchAsync(get.getAttribute("get"));
-		let params = {};
-		params.include = query(get.getAttribute("include"), false);
-		params.exclude = query(get.getAttribute("exclude"), true);
-		jml(get, data, "", params, get);
-		for (let each of get.querySelectorAll("[each]")) each.remove();
-		
-	}
+	getJSON();
   
 });
 
+async function getJSON() {
+	
+	for (let ele of document.querySelectorAll("[get]")) {
+		
+		let data = await fetchAsync(ele.getAttribute("get"));
+		ele.removeAttribute("get");
+		if (!data) continue;
+		load(ele, data);
+		
+	}
+	
+	for (let ele of document.querySelectorAll("[json]")) {
+		
+		let data = JSON.parse(ele.getAttribute("json"));
+		ele.removeAttribute("json");
+		load(ele, data);
+		
+	}
+	
+	if (document.querySelectorAll("[get]").length) getJSON();
+	
+}
+
+async function load(ele, data) {
+	
+	let params = {};
+	params.include = query(ele.getAttribute("include"), false);
+	params.exclude = query(ele.getAttribute("exclude"), true);
+	ele.removeAttribute("include");
+	ele.removeAttribute("exclude");
+	jml(ele, data, "", params, ele);
+	for (let each of ele.querySelectorAll("[each]")) each.remove();
+	
+}
+
 async function fetchAsync(url) {
 	
+	if (url == "{this}") return;
 	let response = await fetch(url);
 	let data = await response.json();
 	
@@ -67,7 +94,7 @@ function sort(k, r, p) {
 	
 }
 
-function each(node, path, par) {
+async function each(node, json, path, par) {
 	
 	for (let each of par.querySelectorAll("[each]")) {
 		
@@ -75,14 +102,15 @@ function each(node, path, par) {
 		new_node = each.cloneNode(true);
 		new_node.removeAttribute("each");
 		node.after(new_node);
+		new_node.outerHTML = await new_node.outerHTML.replaceAll("{this}", json);
 		
 	}
 	
 }
 
-function jml(node, json, path, params, par) {
+async function jml(node, json, path, params, par) {
 	
-	if (params?.include) if (!params.include.includes(path)) node.remove();
+	if (params?.include) if (!params.include.includes(path) && !(params.include.slice(-1)[0].includes(".*") && path.includes(params.include.slice(-1)[0].split("*")[0]))) node.remove();
 	if (params?.exclude) if (params.exclude.includes(path)) node.remove();
 	
 	if (typeof json === "string" || typeof json === "number") {
@@ -95,24 +123,26 @@ function jml(node, json, path, params, par) {
 			node.remove();
 		}
 	}
-	else if (json.length) {
-		for (let row of json) {
-			
-			node.insertAdjacentHTML("beforeend", "<div class='row'></div>");
-			let nodes = node.querySelectorAll(".row");
-			let next_node = nodes[nodes.length-1];
-			jml(next_node, row, path, params, par);
-			
-		}
-	} else {
-		for (let key of sort(Object.keys(json), params?.include, path)) {
-			
-			node.insertAdjacentHTML("beforeend", "<div class='"+key+"'></div>");
-			let nodes = node.querySelectorAll("."+key);
-			let next_node = nodes[nodes.length-1];
-			each(next_node, path+"."+key, par);
-			jml(next_node, json[key], (path ? path+"."+key : key), params, par);
-			
+	else if (json) {
+		if (json.length) {
+			for (let row of json) {
+				
+				node.insertAdjacentHTML("beforeend", "<div class='row'></div>");
+				let nodes = node.querySelectorAll(".row");
+				let next_node = nodes[nodes.length-1];
+				jml(next_node, row, path, params, par);
+				
+			}
+		} else {
+			for (let key of sort(Object.keys(json), params?.include, path)) {
+				
+				node.insertAdjacentHTML("beforeend", "<div class='"+key+"'></div>");
+				let nodes = node.querySelectorAll("."+key);
+				let next_node = nodes[nodes.length-1];
+				each(next_node, json[key], path+"."+key, par);
+				jml(next_node, json[key], (path ? path+"."+key : key), params, par);
+				
+			}
 		}
 	}
 	
