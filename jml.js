@@ -17,13 +17,18 @@ async function getJSON() {
 	
 	for (let ele of document.querySelectorAll("[json]")) {
 		
-		let data = JSON.parse(ele.getAttribute("json"));
-		ele.removeAttribute("json");
-		load(ele, data);
+		try {
+			let data = JSON.parse(ele.getAttribute("json"));
+			ele.removeAttribute("json");
+			load(ele, data);
+		} catch {}
 		
 	}
 	
-	if (document.querySelectorAll("[get]").length) getJSON();
+	document.body.innerHTML = document.body.innerHTML.replace(/get="{this:(.+?)}"/gm, "get='$1'");
+	if (document.querySelectorAll("[get]").length) await getJSON();
+    document.body.innerHTML = document.body.innerHTML.replace(/{this:(.+?)}/gm, "$1");
+	for (let last of document.querySelectorAll(".row_last")) last.remove();
 	
 }
 
@@ -32,8 +37,10 @@ async function load(ele, data) {
 	let params = {};
 	params.include = query(ele.getAttribute("include"), false);
 	params.exclude = query(ele.getAttribute("exclude"), true);
+	params.limit = ele.getAttribute("limit");
 	ele.removeAttribute("include");
 	ele.removeAttribute("exclude");
+	ele.removeAttribute("limit");
 	jml(ele, data, "", params, ele);
 	for (let each of ele.querySelectorAll("[each]")) each.remove();
 	
@@ -99,10 +106,14 @@ async function each(node, json, path, par) {
 	for (let each of par.querySelectorAll("[each]")) {
 		
 		if (each.getAttribute("each") != path) continue;
-		new_node = each.cloneNode(true);
+		let new_node = each.cloneNode(true);
 		new_node.removeAttribute("each");
 		node.after(new_node);
-		new_node.outerHTML = await new_node.outerHTML.replaceAll("{this}", json);
+		if (typeof json === "string" || typeof json === "number") {
+			new_node.outerHTML = await new_node.outerHTML.replaceAll(/{this.*?}/g, "{this:"+json+"}");
+		} else {
+			new_node.outerHTML = await new_node.outerHTML.replaceAll(/"{this.*?}"/g, "'"+JSON.stringify(json)+"'");
+		}
 		
 	}
 	
@@ -112,6 +123,7 @@ async function jml(node, json, path, params, par) {
 	
 	if (params?.include) if (!params.include.includes(path) && !(params.include.slice(-1)[0].includes(".*") && path.includes(params.include.slice(-1)[0].split("*")[0]))) node.remove();
 	if (params?.exclude) if (params.exclude.includes(path)) node.remove();
+	let limit = params.limit ? parseInt(params.limit, 10) : -1;
 	
 	if (typeof json === "string" || typeof json === "number") {
 		node.innerHTML = json;
@@ -127,10 +139,17 @@ async function jml(node, json, path, params, par) {
 		if (json.length) {
 			for (let row of json) {
 				
+				if (limit == 0) return;
 				node.insertAdjacentHTML("beforeend", "<div class='row'></div>");
 				let nodes = node.querySelectorAll(".row");
 				let next_node = nodes[nodes.length-1];
 				jml(next_node, row, path, params, par);
+				if (limit == 1) {
+					node.insertAdjacentHTML("beforeend", "<div class='row_last'></div>");
+					nodes = node.querySelectorAll(".row_last");
+					next_node = nodes[nodes.length-1];
+					jml(next_node, row, path, params, par); }
+				limit--;
 				
 			}
 		} else {
