@@ -11,6 +11,7 @@ Include this script in the html head
 | include | which json properties to include, empty to include all |
 | exclude | which json properties to exclude, empty to exclude none |
 | each | generate additional html for each occurence of a json property |
+| limit | limits the number of rows to generate html from |
 
 # Examples
 
