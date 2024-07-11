@@ -20,7 +20,7 @@ Include this script in the html head
 The `include` and `exclude` attributes support multi-path and single path selectors whereas the `each` and `modifier` attributes only support single path selectors. If the `include` attribute's selector is incomplete and points to a JSON object, the child fields remain part of the scope but will not be rendered, however they can still accessed through the `each` attribute
 | Selector | Type | Description |
 | --- | --- | --- |
-| `<key>` | single | any json object field name |
+| `<key>` | single | any json object field name e.g. `users` |
 | `.` | single | chain keys together to target child fields e.g. `users.name.firstname` |
 | `\|` | multi | target multiple child fields e.g. `name.firstname\|lastname` |
 | `,` | multi | separate multiple selectors e.g. `users.id,users.name.firstname` |
