@@ -17,7 +17,7 @@ Include this script in the html head
 | visibility | overwrites initial visibility style for the element |
 
 ### Built-in Modifiers
-| Method | Paramters | Optional | Description |
+| Method | Paramaters | Optional | Description |
 | --- | --- | --- | --- |
 | numberedList() | selector, key | off=0, <br>sep=". " | assign numbering to a field in an array of objects with an optional offset and separator |
 | sortArray() | selector, key | desc=false | sort an array of objects by a key with field values of string, number, or array length by either ascending or descending |
