@@ -4,6 +4,7 @@ Include this script in the html head
 <script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@cc407bd/jml.js"></script>
 ```
 
+### Attributes
 | HTML Attribute | Description |
 | --- | --- |
 | get | retrieve and generate html using json from a url |
@@ -15,10 +16,11 @@ Include this script in the html head
 | modifier | execute a custom or built-in function to modify the json |
 | visiblity | overwrites initial visiblity style for the element |
 
+### Modifiers
 | Built-in Modifier | Paramters | Description |
-| --- | --- |
-| numberedList | selector, key, [off = 0, sep = ". "] | - |
-| sortArray | selector, key, [desc = false] | - |
+| --- | --- | --- |
+| numberedList() | selector, key, [off = 0, sep = ". "] | assign numbering to a field in an array of objects |
+| sortArray() | selector, key, [desc = false] | sort array of objects by key with value of string, number, or array length |
 
 # Examples
 
