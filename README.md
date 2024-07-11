@@ -201,7 +201,7 @@ Use the `modifier=` attribute to call custom or built-in modifier methods such a
 	modifier="sortArray(results,name,true)"
 	limit=5
 >
-	<h3 each="results.name">{this}</h1>
+	<h3 each="results.name">{this}</h3>
 </div>
 ```
 
