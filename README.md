@@ -17,8 +17,8 @@ Include this script in the html head
 
 | Built-in Modifier | Paramters | Description |
 | --- | --- |
-| numberedList | selector, key, [off = 0, sep = ". "] |  |
-| sortArray | selector, key, [desc = false] |  |
+| numberedList | selector, key, [off = 0, sep = ". "] | - |
+| sortArray | selector, key, [desc = false] | - |
 
 # Examples
 
