@@ -8,16 +8,16 @@ Include this script in the html head
 | --- | --- |
 | get | retrieve and generate html using json from a url |
 | json | generate html using json |
-| include | which json properties to include, empty to include all |
-| exclude | which json properties to exclude, empty to exclude none |
-| each | generate additional html for each occurence of a json property |
+| include | which json fields to include, empty to include all |
+| exclude | which json fields to exclude, empty to exclude none |
+| each | generate additional html for each occurence of a field |
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in function to modify the json |
 | visiblity | overwrites initial visiblity style for the element |
 
 # Examples
 
-### 1 - Get JSON and Include Properties
+### 1 - Get JSON and Include Fields
 Get json from `https://pokeapi.co/api/v2/pokemon` and only include `results.name` and `results.url`
 ```html
 <div
@@ -78,7 +78,7 @@ Get json from `https://pokeapi.co/api/v2/pokemon` and only include `results.name
 <hr>
 
 ### 2 - Each and Custom HTML
-Loop through each of the results and target the `name` property, optionally, `{this}` will be replaced by the corresponding name.
+Loop through each of the results and target the `name` field, optionally, `{this}` will be replaced by the corresponding name.
 This allows for additional customization of the outputted html structure.
 ```html
 <div
@@ -121,7 +121,7 @@ This allows for additional customization of the outputted html structure.
 
 <hr>
 
-### 3 - Generative Nesting through Uniform Interface
+### 3 - Generative Nesting through the Uniform Interface
 If part of your returned JSON data contains a url you can target it using `{this}` paired with the `get=` attribute to generate additional HTML from the API
 ```html
 <div
