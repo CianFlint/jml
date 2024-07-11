@@ -212,3 +212,27 @@ function numberedList(data, off = 0, sep = ". ") {
 	return data;
 	
 }
+
+function sortArray(data, key, desc = false) {
+	
+	if (key === undefined) return data;
+	let type = typeof data[0][key];
+	if (type == "string") {
+		data.sort((a, b) => {
+			a = a[key].toUpperCase();
+			b = b[key].toUpperCase();
+			if (a < b) return -1;
+			if (a > b) return 1;
+			return 0;
+		});
+	}
+	if (type == "number") {
+		data.sort((a, b) => a[key] - b[key]);
+	}
+	if (type == "object") {
+		data.sort((a, b) => a[key].length - b[key].length);
+	}
+	if (desc) data = data.reverse();
+	return data;
+	
+}
