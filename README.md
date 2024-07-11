@@ -17,10 +17,10 @@ Include this script in the html head
 | visiblity | overwrites initial visiblity style for the element |
 
 ### Modifiers
-| Built-in Modifier | Paramters | Description |
-| --- | --- | --- |
-| numberedList() | selector, key, [off = 0, sep = ". "] | assign numbering to a field in an array of objects |
-| sortArray() | selector, key, [desc = false] | sort array of objects by key with value of string, number, or array length |
+| Built-in Modifier | Description |
+| --- | --- |
+| numberedList(selector, key, [off = 0, sep = ". "]) | assign numbering to a field in an array of objects |
+| sortArray(selector, key, [desc = false]) | sort array of objects by key with value of string, number, or array length |
 
 # Examples
 
