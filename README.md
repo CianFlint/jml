@@ -19,8 +19,8 @@ Include this script in the html head
 ### Modifiers
 | Built-in Modifier | Description |
 | --- | --- |
-| numberedList<br>(selector, key, [off = 0, sep = ". "]) | assign numbering to a field in an array of objects |
-| sortArray<br>(selector, key, [desc = false]) | sort array of objects by key with value of string, number, or array length |
+| numberedList<br>(selector, key, [off = 0, sep = ". "]) | assign numbering to a field in an array of objects with an optional offset and separator |
+| sortArray<br>(selector, key, [desc = false]) | sort an array of objects by a key with field values of string, number, or array length by either ascending or descending |
 
 # Examples
 
