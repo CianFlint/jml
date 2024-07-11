@@ -13,7 +13,7 @@ Include this script in the html head
 | each | generate additional html for each occurence of a json property |
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in function to modify the json |
-| visiblity | overwrites visiblity style for the element |
+| visiblity | overwrites initial visiblity style for the element |
 
 # Examples
 
