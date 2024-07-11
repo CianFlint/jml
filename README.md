@@ -88,7 +88,7 @@ Get json from `https://pokeapi.co/api/v2/pokemon` and only include `results.name
 <hr>
 
 ### 2 - Each and Custom HTML
-Loop through each of the results and target the `name` field, optionally, `{this}` will be replaced by the corresponding name. This allows for additional customization of the outputted html structure.
+Loop through each of the results and target the `name` field, optionally, `{this}` will be replaced by the corresponding name. This allows for additional customization of the outputted html structure
 ```html
 <div
 	get="https://pokeapi.co/api/v2/pokemon"
@@ -196,7 +196,7 @@ If part of your returned JSON data contains a url you can target it using `{this
 <hr>
 
 ### 4 - Modifiers and Limit
-Use the `modifier=` attribute to call custom or built-in modifier methods such as `sortArray()`. The first argument is a selector, in this case it points to an array called `results`, the second argument is the key to sort the objects in the array on, and the last argument optionally reverses the array. All built-in or custom modifier methods require a selector as the first argument, the selector will then pass JSON data to the first paramater of the modifier method.
+Use the `modifier=` attribute to call custom or built-in modifier methods such as `sortArray()`. The first argument is a selector, in this case it points to an array called `results`, the second argument is the key to sort the objects in the array on, and the last argument optionally reverses the array
 ```html
 <div
 	get="https://pokeapi.co/api/v2/pokemon"
@@ -229,6 +229,63 @@ Use the `modifier=` attribute to call custom or built-in modifier methods such a
         </div>
         <div class="row">
             <h3>rattata</h3>
+        </div>
+    </div>
+</div>
+```
+  
+</details>
+
+<hr>
+
+### 5 - Custom and Multiple Modifiers
+There is support to write your own custom modifiers, the first paramater will receive JSON data when a selector is passed to it. Custom modifiers can also be used to call multiple modifiers at once
+```js
+function customExample(data, key) {
+	
+	sortArray(data, key, true);
+	numberedList(data, key);
+	return data;
+	
+}
+```
+All built-in or custom modifier methods require a selector as the first argument, the selector will then pass the corresponding JSON data to the first paramater of the modifier method
+```html
+<div
+	get="https://pokeapi.co/api/v2/pokemon"
+	modifier="customExample(results,name)"
+	limit=5
+></div>
+```
+
+<details>
+  <summary>HTML Output</summary>
+
+```html
+<div style="">
+    <div class="count">1302</div>
+    <div class="next">https://pokeapi.co/api/v2/pokemon?offset=20&amp;limit=20</div>
+    <div class="previous"></div>
+    <div class="results">
+        <div class="row">
+            <div class="name">1. weedle</div>
+            <div class="url">https://pokeapi.co/api/v2/pokemon/13/</div>
+        </div>
+        <div class="row">
+            <div class="name">2. wartortle</div>
+            <div class="url">https://pokeapi.co/api/v2/pokemon/8/</div>
+        </div>
+        <div class="row">
+            <div class="name">3. venusaur</div>
+            <div class="url">https://pokeapi.co/api/v2/pokemon/3/</div>
+        </div>
+        <div class="row">
+            <div class="name">4. squirtle</div>
+            <div class="url">https://pokeapi.co/api/v2/pokemon/7/</div>
+        </div>
+        <div class="row">
+            <div class="name">5. rattata</div>
+            <div class="url">https://pokeapi.co/api/v2/pokemon/19/</div>
         </div>
     </div>
 </div>
