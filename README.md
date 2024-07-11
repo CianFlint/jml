@@ -12,6 +12,7 @@ Include this script in the html head
 | exclude | which json properties to exclude, empty to exclude none |
 | each | generate additional html for each occurence of a json property |
 | limit | limits the number of rows to generate html from |
+| modifier | execute a custom function to modify the JSON |
 
 # Examples
 
