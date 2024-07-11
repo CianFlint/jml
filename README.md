@@ -21,21 +21,21 @@ Get json from `https://pokeapi.co/api/v2/pokemon` and only include `results.name
 <div
 	get="https://pokeapi.co/api/v2/pokemon"
 	include="results.name|url"
->
+></div>
 ```
 **OR**
 ```html
 <div
 	get="https://pokeapi.co/api/v2/pokemon"
 	include="results.name,results.url"
->
+></div>
 ```
 **OR**
 ```html
 <div
 	get="https://pokeapi.co/api/v2/pokemon"
 	include="results.*"
->
+></div>
 ```
 
 <details>
