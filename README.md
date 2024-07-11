@@ -85,8 +85,7 @@ Get json from `https://pokeapi.co/api/v2/pokemon` and only include `results.name
 <hr>
 
 ### 2 - Each and Custom HTML
-Loop through each of the results and target the `name` field, optionally, `{this}` will be replaced by the corresponding name.
-This allows for additional customization of the outputted html structure.
+Loop through each of the results and target the `name` field, optionally, `{this}` will be replaced by the corresponding name. This allows for additional customization of the outputted html structure.
 ```html
 <div
 	get="https://pokeapi.co/api/v2/pokemon"
@@ -187,6 +186,49 @@ If part of your returned JSON data contains a url you can target it using `{this
 
 ...
 
+```
+  
+</details>
+
+<hr>
+
+### 4 - Modifiers and Limit
+Use the `modifier=` attribute to call custom or built-in modifier methods such as `sortArray()`. The first argument is a selector, in this case it points to an array called `results`, the second argument is the key to sort the objects in the array on, and the last argument optionally reverses the array. All built-in or custom modifier methods require a selector as the first argument, the selector will then pass JSON data to the first paramater of the modifier method.
+```html
+<div
+	get="https://pokeapi.co/api/v2/pokemon"
+	include="results,count"
+	modifier="sortArray(results,name,true)"
+	limit=5
+>
+	<h3 each="results.name">{this}</h1>
+</div>
+```
+
+<details>
+  <summary>HTML Output</summary>
+
+```html
+<div>
+    <div class="count">1302</div>
+    <div class="results">
+        <div class="row">
+            <h3>weedle</h3>
+        </div>
+        <div class="row">
+            <h3>wartortle</h3>
+        </div>
+        <div class="row">
+            <h3>venusaur</h3>
+        </div>
+        <div class="row">
+            <h3>squirtle</h3>
+        </div>
+        <div class="row">
+            <h3>rattata</h3>
+        </div>
+    </div>
+</div>
 ```
   
 </details>
