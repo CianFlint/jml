@@ -200,13 +200,14 @@
 
 /* Built-in Modifier Methods */
 
-function numberedList(data, off = 0, sep = ". ") {
+function numberedList(data, key, off = 0, sep = ". ") {
 	
+	if (key === undefined) return data;
 	let i = off;
 	for (let x of data) {
 		
 		i++;
-		x.name = i + sep + x.name;
+		x[key] = i + sep + x[key];
 		
 	}
 	return data;
