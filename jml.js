@@ -10,8 +10,8 @@
 		
 		for (let ele of document.querySelectorAll("[get]")) {
 			
+			ele.style.visibility = "hidden";
 			let data = await fetchAsync(ele.getAttribute("get"));
-			ele.removeAttribute("get");
 			if (!data) continue;
 			load(ele, data);
 			
@@ -19,9 +19,9 @@
 		
 		for (let ele of document.querySelectorAll("[json]")) {
 			
+			ele.style.visibility = "hidden";
 			try {
 				let data = JSON.parse(ele.getAttribute("json"));
-				ele.removeAttribute("json");
 				load(ele, data);
 			} catch {}
 			
@@ -48,6 +48,12 @@
 		modifier(ele, data, params);
 		jml(ele, data, "", params, ele);
 		for (let each of ele.querySelectorAll("[each]")) each.remove();
+		for (let ele of document.querySelectorAll("[get], [json]")) {
+			if (ele.getAttribute("visibility") != "hidden") ele.style.visibility = "";
+			ele.removeAttribute("visibility");
+			ele.removeAttribute("get");
+			ele.removeAttribute("json");
+		}
 		
 	}
 
@@ -68,7 +74,7 @@
 		params.modifier.func = func[0];
 		params.modifier.selector = args[0] || "";
 		params.modifier.args = args.slice(1);
-		//window[func[0]](data, args[0], ...args.slice(1));
+		ele.removeAttribute("modifier");
 
 	}
 
@@ -168,7 +174,8 @@
 						node.insertAdjacentHTML("beforeend", "<div class='row_last'></div>");
 						nodes = node.querySelectorAll(".row_last");
 						next_node = nodes[nodes.length-1];
-						jml(next_node, row, path, params, par); }
+						jml(next_node, row, path, params, par);
+					}
 					limit--;
 					
 				}
@@ -188,3 +195,20 @@
 	}
 	
 })();
+
+
+
+/* Built-in Modifier Methods */
+
+function numberedList(data, off = 0, sep = ". ") {
+	
+	let i = off;
+	for (let x of data) {
+		
+		i++;
+		x.name = i + sep + x.name;
+		
+	}
+	return data;
+	
+}
