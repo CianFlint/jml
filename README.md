@@ -14,7 +14,7 @@ Include this script in the html head
 | each | generate additional html for each occurence of a field |
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in method to modify the json |
-| visiblity | overwrites initial visiblity style for the element |
+| visibility | overwrites initial visibility style for the element |
 
 ### Modifiers
 | Method | Paramters | Optional | Description |
