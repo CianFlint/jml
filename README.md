@@ -16,7 +16,7 @@ Include this script in the html head
 | modifier | execute a custom or built-in method to modify the json |
 | visibility | overwrites initial visibility style for the element |
 
-### Modifiers
+### Built-in Modifiers
 | Method | Paramters | Optional | Description |
 | --- | --- | --- | --- |
 | numberedList() | selector, key | off=0, <br>sep=". " | assign numbering to a field in an array of objects with an optional offset and separator |
