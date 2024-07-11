@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@d773790/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@cc407bd/jml.js"></script>
 ```
 
 | HTML Attribute | Description |
@@ -14,6 +14,11 @@ Include this script in the html head
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in function to modify the json |
 | visiblity | overwrites initial visiblity style for the element |
+
+| Built-in Modifier | Paramters | Description |
+| --- | --- |
+| numberedList | selector, key, [off = 0, sep = ". "] |  |
+| sortArray | selector, key, [desc = false] |  |
 
 # Examples
 
