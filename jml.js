@@ -250,7 +250,6 @@ function omitParent(data, key) {
 	let i = 0;
 	for (let x of data) {
 		
-		console.log(data[i], x[key]);
 		data[i] = x[key];
 		i++;
 		
