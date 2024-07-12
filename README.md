@@ -272,7 +272,7 @@ All built-in or custom modifier methods require a selector as the first argument
   <summary>HTML Output</summary>
 
 ```html
-<div style="">
+<div>
     <div class="count">1302</div>
     <div class="next">https://pokeapi.co/api/v2/pokemon?offset=20&amp;limit=20</div>
     <div class="previous"></div>
