@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@041f748/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@a4c1cf9/jml.js"></script>
 ```
 
 ### Attributes
@@ -33,6 +33,7 @@ The `include` and `exclude` attributes support multi-path and single path select
 | numberedList() | selector, key | off=0, <br>sep=". " | assign numbering to a field in an array of objects with an optional offset and separator |
 | sortArray() | selector, key | desc=false | sort an array of objects by a key with field values of string, number, or array length by either ascending or descending |
 | omitParent() | selector, key |  | delete a parent node while maintaining the children e.g. `omitParent(users,name)` modifies `users.name.firstname` to `users.firstname` |
+| renameNode() | selector, key, rename |  | rename a node e.g. `renameNode(user.name,lastname,surname)` modifies `user.name.lastname` to `user.name.surname` |
 ...
 
 *You can contribute to this project by extending the list of built-in modifiers*
