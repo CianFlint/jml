@@ -42,6 +42,7 @@
 			if (ele.getAttribute("visibility") != "hidden") ele.style.visibility = "";
 			ele.removeAttribute("visibility");
 		}
+		for (let ele of document.querySelectorAll("[style='']")) ele.removeAttribute("style");
 		
 	}
 
@@ -151,6 +152,7 @@
 
 	async function jml(node, json, path, params, par) {
 		
+		path = path.replaceAll(/__\d+\./g, ".").replaceAll(/__\d+/g, "");
 		if (params?.include) if (!params.include.includes(path) && !(params.include.slice(-1)[0].includes(".*") && path.includes(params.include.slice(-1)[0].split("*")[0]))) node.remove();
 		if (params?.exclude) if (params.exclude.includes(path)) node.remove();
 		if (params.modifier) if (params.modifier.selector == path) { json = window[params.modifier.func](json, ...params.modifier.args); }
@@ -188,7 +190,9 @@
 			} else {
 				for (let key of sort(Object.keys(json), params?.include, path)) {
 					
-					node.insertAdjacentHTML("beforeend", "<div class='"+key+"'></div>");
+					let k = key.split("__")[0];
+					if (k == key) k = "";
+					node.insertAdjacentHTML("beforeend", "<div class='"+k+" "+key+"'></div>");
 					let nodes = node.querySelectorAll("."+key);
 					let next_node = nodes[nodes.length-1];
 					each(next_node, json[key], path+"."+key, params, par);
@@ -247,10 +251,25 @@ function sortArray(data, key, desc = false) {
 function omitParent(data, key) {
 	
 	if (key === undefined) return data;
+	if (data.length === undefined) {
+		if (!data[key].length) for (let k of Object.keys(data[key])) { console.log(k); data[k] = data[key][k]; }
+		else {
+			let i = 0;
+			for (let x of data[key]) {
+				
+				for (let k of Object.keys(x)) data[k+"__"+i] = x[k];
+				i++;
+			
+			}
+			delete data[key];
+		}
+		return data;
+	}
 	let i = 0;
 	for (let x of data) {
 		
-		data[i] = x[key];
+		for (let k of Object.keys(x[key])) data[i][k] = x[key][k];
+		delete data[i][key];
 		i++;
 		
 	}
