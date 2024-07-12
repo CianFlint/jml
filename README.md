@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@ad7f854/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@5e58a45/jml.js"></script>
 ```
 
 ### Attributes
@@ -15,6 +15,7 @@ Include this script in the html head
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in method to modify the json |
 | visibility | overwrites initial visibility style for the element |
+| tsrc | use instead of `src` in `each` loops to prevent console errors |
 
 ### Selectors
 The `include` and `exclude` attributes support multi-path and single path selectors whereas the `each` and `modifier` attributes only support single path selectors. If the `include` attribute's selector is incomplete and points to a JSON object, the child fields remain part of the scope but will not be rendered, however they can still accessed through the `each` attribute
@@ -31,6 +32,7 @@ The `include` and `exclude` attributes support multi-path and single path select
 | --- | --- | --- | --- |
 | numberedList() | selector, key | off=0, <br>sep=". " | assign numbering to a field in an array of objects with an optional offset and separator |
 | sortArray() | selector, key | desc=false | sort an array of objects by a key with field values of string, number, or array length by either ascending or descending |
+| omitParent() | selector, key |  | delete a parent node while maintaining the children e.g. `omitParent(users,name)` modifies `users.name.firstname` to `users.firstname` |
 ...
 
 *You can contribute to this project by extending the list of built-in modifiers*
