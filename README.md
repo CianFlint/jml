@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@5e58a45/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@76aa21d/jml.js"></script>
 ```
 
 ### Attributes
