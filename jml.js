@@ -132,9 +132,11 @@
 
 	async function each(node, json, path, params, par) {
 		
+		let used = false;
 		for (let each of par.querySelectorAll("[each]")) {
 			
 			if (each.getAttribute("each") != path) continue;
+			used = true;
 			let new_node = each.cloneNode(true);
 			new_node.removeAttribute("each");
 			node.after(new_node);
@@ -146,7 +148,7 @@
 			}
 			
 		}
-		if (params.modifier) if (params.modifier.selector == path) delete params.modifier;
+		if (params.modifier && used) if (params.modifier.selector == path) delete params.modifier;
 		
 	}
 
@@ -190,9 +192,9 @@
 			} else {
 				for (let key of sort(Object.keys(json), params?.include, path)) {
 					
-					let k = key.split("__")[0];
-					if (k == key) k = "";
-					node.insertAdjacentHTML("beforeend", "<div class='"+k+" "+key+"'></div>");
+					let k = key.split("__")[0]+" ";
+					if (k == key+" ") k = "";
+					node.insertAdjacentHTML("beforeend", "<div class='"+k+key+"'></div>");
 					let nodes = node.querySelectorAll("."+key);
 					let next_node = nodes[nodes.length-1];
 					each(next_node, json[key], path+"."+key, params, par);
@@ -252,7 +254,7 @@ function omitParent(data, key) {
 	
 	if (key === undefined) return data;
 	if (data.length === undefined) {
-		if (!data[key].length) for (let k of Object.keys(data[key])) { console.log(k); data[k] = data[key][k]; }
+		if (!data[key].length) for (let k of Object.keys(data[key])) { data[k] = data[key][k]; }
 		else {
 			let i = 0;
 			for (let x of data[key]) {
@@ -273,6 +275,15 @@ function omitParent(data, key) {
 		i++;
 		
 	}
+	return data;
+	
+}
+
+function renameNode(data, key, rename) {
+	
+	if (key === undefined || rename === undefined) return data;
+	data[rename] = data[key];
+	delete data[key];
 	return data;
 	
 }
