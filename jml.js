@@ -11,8 +11,10 @@
 		for (let ele of document.querySelectorAll("[get]")) {
 			
 			ele.style.visibility = "hidden";
+			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
 			let data = await fetchAsync(ele.getAttribute("get"));
 			if (!data) continue;
+			ele.removeAttribute("get");
 			load(ele, data);
 			
 		}
@@ -20,8 +22,11 @@
 		for (let ele of document.querySelectorAll("[json]")) {
 			
 			ele.style.visibility = "hidden";
+			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
 			try {
 				let data = JSON.parse(ele.getAttribute("json"));
+				if (!data) continue;
+				ele.removeAttribute("json");
 				load(ele, data);
 			} catch {}
 			
@@ -32,6 +37,11 @@
 		if (document.querySelectorAll("[get]").length) await getJSON();
 		document.body.innerHTML = document.body.innerHTML.replace(/{this:(.+?)}/gm, "$1");
 		for (let last of document.querySelectorAll(".row_last")) last.remove();
+		for (let img of document.querySelectorAll("[tsrc]")) { img.setAttribute("src", img.getAttribute("tsrc")); img.removeAttribute("tsrc") }
+		for (let ele of document.querySelectorAll("[visibility]")) {
+			if (ele.getAttribute("visibility") != "hidden") ele.style.visibility = "";
+			ele.removeAttribute("visibility");
+		}
 		
 	}
 
@@ -41,25 +51,19 @@
 		params.include = query(ele.getAttribute("include"), false);
 		params.exclude = query(ele.getAttribute("exclude"), true);
 		params.limit = ele.getAttribute("limit");
-		params.modifier = {"func" : null, "selector" : "", "args" : []};
+		params.modifier = {"func" : null, "selector" : null, "args" : []};
 		ele.removeAttribute("include");
 		ele.removeAttribute("exclude");
 		ele.removeAttribute("limit");
 		modifier(ele, data, params);
 		jml(ele, data, "", params, ele);
 		for (let each of ele.querySelectorAll("[each]")) each.remove();
-		for (let ele of document.querySelectorAll("[get], [json]")) {
-			if (ele.getAttribute("visibility") != "hidden") ele.style.visibility = "";
-			ele.removeAttribute("visibility");
-			ele.removeAttribute("get");
-			ele.removeAttribute("json");
-		}
 		
 	}
 
 	async function fetchAsync(url) {
 		
-		if (url == "{this}" || url == "") return;
+		if (url == "{this}" || url == "" || url == null) return;
 		let response = await fetch(url);
 		let data = await response.json();
 		
@@ -69,7 +73,9 @@
 
 	async function modifier(ele, data, params) {
 		
-		let func = ele.getAttribute("modifier").split(/[()]/);
+		let mod = ele.getAttribute("modifier");
+		if (!mod) return;
+		let func = mod.split(/[()]/);
 		let args = func[1].replaceAll(" ", "").split(",");
 		params.modifier.func = func[0];
 		params.modifier.selector = args[0] || "";
@@ -234,6 +240,21 @@ function sortArray(data, key, desc = false) {
 		data.sort((a, b) => a[key].length - b[key].length);
 	}
 	if (desc) data = data.reverse();
+	return data;
+	
+}
+
+function omitParent(data, key) {
+	
+	if (key === undefined) return data;
+	let i = 0;
+	for (let x of data) {
+		
+		console.log(data[i], x[key]);
+		data[i] = x[key];
+		i++;
+		
+	}
 	return data;
 	
 }
