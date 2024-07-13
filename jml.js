@@ -67,7 +67,6 @@
 		if (url == "{this}" || url == "" || url == null) return;
 		let response = await fetch(url);
 		let data = await response.json();
-		
 		return data;
 		
 	}
@@ -257,21 +256,23 @@ function omitParent(data, key) {
 		if (!data[key].length) for (let k of Object.keys(data[key])) { data[k] = data[key][k]; }
 		else {
 			let i = 0;
-			for (let x of data[key]) {
+			let d = [...data[key]];
+			delete data[key];
+			for (let x of d) {
 				
 				for (let k of Object.keys(x)) data[k+"__"+i] = x[k];
 				i++;
 			
 			}
-			delete data[key];
 		}
 		return data;
 	}
 	let i = 0;
 	for (let x of data) {
 		
-		for (let k of Object.keys(x[key])) data[i][k] = x[key][k];
+		let x = {...data[i]};
 		delete data[i][key];
+		for (let k of Object.keys(x[key])) data[i][k] = x[key][k];
 		i++;
 		
 	}
@@ -282,8 +283,9 @@ function omitParent(data, key) {
 function renameNode(data, key, rename) {
 	
 	if (key === undefined || rename === undefined) return data;
-	data[rename] = data[key];
+	let d = data[key];
 	delete data[key];
+	data[rename] = d;
 	return data;
 	
 }
