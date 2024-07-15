@@ -289,3 +289,63 @@ function renameNode(data, key, rename) {
 	return data;
 	
 }
+
+function toFront(data, key) { return renameNode(data, key, key); }
+
+function toIndex(data, key, index = 0) {
+	
+	let i = -1;
+	let d = {...data};
+	for (let k of Object.keys(data)) {
+		
+		i++;
+		if (i == index) {
+			delete data[key];
+			data[key] = d[key];
+		}
+		if (k == key) continue;
+		delete data[k];
+		data[k] = d[k];
+		
+	}
+	return data;
+	
+}
+
+function toBack(data, key) { return toIndex(data, key, 0); }
+
+function afterNode(data, key, node) {
+	
+	let d = {...data};
+	for (let k of Object.keys(data)) {
+		
+		if (k == key) continue;
+		delete data[k];
+		data[k] = d[k];
+		if (k == node) {
+			delete data[key];
+			data[key] = d[key];
+		}
+		
+	}
+	return data;
+	
+}
+
+function beforeNode(data, key, node) {
+	
+	let d = {...data};
+	for (let k of Object.keys(data)) {
+		
+		if (k == node) {
+			delete data[key];
+			data[key] = d[key];
+		}
+		if (k == key) continue;
+		delete data[k];
+		data[k] = d[k];
+		
+	}
+	return data;
+	
+}
