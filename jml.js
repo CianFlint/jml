@@ -8,6 +8,7 @@
 
 	async function getJSON() {
 		
+		for (let ele of document.querySelectorAll("[loading]")) { ele.style.visibility = "visible"; }
 		for (let ele of document.querySelectorAll("[get]")) {
 			
 			ele.style.visibility = "hidden";
@@ -42,6 +43,7 @@
 			if (ele.getAttribute("visibility") != "hidden") ele.style.visibility = "";
 			ele.removeAttribute("visibility");
 		}
+		for (let ele of document.querySelectorAll("[loading]")) { ele.remove(); }
 		for (let ele of document.querySelectorAll("[style='']")) ele.removeAttribute("style");
 		
 	}
