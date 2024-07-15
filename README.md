@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@5ab5519/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@7f35bc4/jml.js"></script>
 ```
 
 ### Attributes
@@ -15,6 +15,7 @@ Include this script in the html head
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in method to modify the json |
 | visibility | overwrites initial visibility style for the element |
+| loading | makes an element only visible during the loading phase |
 | tsrc | use instead of `src` in `each` loops to prevent console errors |
 
 ### Selectors
