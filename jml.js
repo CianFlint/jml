@@ -143,11 +143,10 @@
 			new_node.removeAttribute("each");
 			node.after(new_node);
 			if (params.modifier) if (params.modifier.selector == path) json = window[params.modifier.func](json, ...params.modifier.args);
-			if (typeof json === "string" || typeof json === "number") {
-				new_node.outerHTML = await new_node.outerHTML.replaceAll(/{this.*?}/g, "{this:"+json+"}");
-			} else {
-				new_node.outerHTML = await new_node.outerHTML.replaceAll(/"{this.*?}"/g, "'"+JSON.stringify(json)+"'");
-			}
+			
+			let type = typeof json;
+			if (type === "string" || type === "number") new_node.outerHTML = await new_node.outerHTML.replaceAll(/{this.*?}/g, "{this:"+json+"}");
+			else new_node.outerHTML = await new_node.outerHTML.replaceAll(/"{this.*?}"/g, "'"+JSON.stringify(json)+"'");
 			
 		}
 		if (params.modifier && used) if (params.modifier.selector == path) delete params.modifier;
@@ -293,62 +292,31 @@ function renameNode(data, key, rename) {
 	
 }
 
-function toFront(data, key) { return renameNode(data, key, key); }
-
 function toIndex(data, key, index = 0) {
 	
 	let i = -1;
 	let d = {...data};
+	let found = false;
+	if (index < 0) index = Object.keys(data).length+index+1;
 	for (let k of Object.keys(data)) {
 		
 		i++;
 		if (i == index) {
 			delete data[key];
 			data[key] = d[key];
+			found = true;
 		}
 		if (k == key) continue;
 		delete data[k];
 		data[k] = d[k];
 		
 	}
+	if (!found) delete data[key]; data[key] = d[key];
 	return data;
 	
 }
 
-function toBack(data, key) { return toIndex(data, key, 0); }
 
-function afterNode(data, key, node) {
-	
-	let d = {...data};
-	for (let k of Object.keys(data)) {
-		
-		if (k == key) continue;
-		delete data[k];
-		data[k] = d[k];
-		if (k == node) {
-			delete data[key];
-			data[key] = d[key];
-		}
-		
-	}
-	return data;
-	
-}
+/* Helper Functions */
 
-function beforeNode(data, key, node) {
-	
-	let d = {...data};
-	for (let k of Object.keys(data)) {
-		
-		if (k == node) {
-			delete data[key];
-			data[key] = d[key];
-		}
-		if (k == key) continue;
-		delete data[k];
-		data[k] = d[k];
-		
-	}
-	return data;
-	
-}
+function nodeIndex(data, key) { return Object.keys(data).indexOf(key); }
