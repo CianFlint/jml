@@ -44,6 +44,7 @@
 			ele.removeAttribute("visibility");
 		}
 		for (let ele of document.querySelectorAll("[loading]")) { ele.remove(); }
+		for (let ele of document.querySelectorAll("[after]")) { ele.parentElement.appendChild(ele); }
 		for (let ele of document.querySelectorAll("[style='']")) ele.removeAttribute("style");
 		
 	}
