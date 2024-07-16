@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@7f35bc4/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@225a248/jml.js"></script>
 ```
 
 ### Attributes
@@ -16,6 +16,7 @@ Include this script in the html head
 | modifier | execute a custom or built-in method to modify the json |
 | visibility | overwrites initial visibility style for the element |
 | loading | makes an element only visible during the loading phase |
+| after | render nested element after the generated html |
 | tsrc | use instead of `src` in `each` loops to prevent console errors |
 
 ### Selectors
