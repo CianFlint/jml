@@ -4,8 +4,8 @@ Include this script in the html head
 <script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@6c92397/jml.js"></script>
 ```
 
-### Attributes
-| HTML Attribute | Description |
+### HTML Attributes
+| Attribute | Description |
 | --- | --- |
 | get | retrieve and generate html using json from a url |
 | json | generate html using json |
@@ -19,7 +19,7 @@ Include this script in the html head
 | after | render nested element after the generated html |
 | tsrc | use instead of `src` in `each` loops to prevent console errors |
 
-### Selectors
+### JSON Selectors
 The `include` and `exclude` attributes support multi-path and single path selectors whereas the `each` and `modifier` attributes only support single path selectors. If the `include` attribute's selector is incomplete and points to a JSON object, the child fields remain part of the scope but will not be rendered, however they can still accessed through the `each` attribute
 | Selector | Type | Description |
 | --- | --- | --- |
@@ -28,6 +28,11 @@ The `include` and `exclude` attributes support multi-path and single path select
 | `\|` | multi | target multiple child fields e.g. `name.firstname\|lastname` |
 | `,` | multi | separate multiple selectors e.g. `users.id,users.name.firstname` |
 | `*` | multi | select all child fields e.g. `users.name.*` |
+
+### Helper Functions
+| Function | Paramaters | Description |
+| --- | --- | --- |
+| nodeIndex() | data, key | returns the index of the specified `key` |
 
 ### Built-in Modifiers
 | Method | Paramaters | Optional | Description |
@@ -40,11 +45,6 @@ The `include` and `exclude` attributes support multi-path and single path select
 ...
 
 *You can contribute to this project by extending the list of built-in modifiers*
-
-### Helper Functions
-| Function | Paramaters | Description |
-| --- | --- | --- |
-| nodeIndex() | data, key | returns the index of the specified `key` |
 
 # Examples
 
