@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@225a248/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@6c92397/jml.js"></script>
 ```
 
 ### Attributes
@@ -36,14 +36,15 @@ The `include` and `exclude` attributes support multi-path and single path select
 | sortArray() | selector, key | desc=false | sort an array of objects by a key with field values of string, number, or array length by either ascending or descending |
 | omitParent() | selector, key |  | delete a parent node while maintaining the children e.g. `omitParent(users,name)` modifies `users.name.firstname` to `users.firstname` |
 | renameNode() | selector, key, rename |  | rename a node e.g. `renameNode(user.name,lastname,surname)` modifies `user.name.lastname` to `user.name.surname` |
-| toFront() | selector, key |  | move to the front of all sibling nodes |
-| toBack() | selector, key |  | move behind all sibling nodes |
-| toIndex() | selector, key | index=0 | move to a specified `index` under the parent node |
-| afterNode() | selector, key, node |  | move in front of the specified `node` |
-| beforeNode() | selector, key, node |  | move behind the specified `node` |
+| toIndex() | selector, key | index=0 | move to a specified `index` under the parent node, negative indexes are also supported |
 ...
 
 *You can contribute to this project by extending the list of built-in modifiers*
+
+### Helper Functions
+| Function | Paramaters | Description |
+| --- | --- | --- |
+| nodeIndex() | data, key | returns the index of the specified `key` |
 
 # Examples
 
