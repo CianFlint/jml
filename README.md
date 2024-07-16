@@ -46,6 +46,8 @@ The `include` and `exclude` attributes support multi-path and single path select
 
 *You can contribute to this project by extending the list of built-in modifiers*
 
+<hr>
+
 # Examples
 
 ### 1 - Get JSON and Include Fields
