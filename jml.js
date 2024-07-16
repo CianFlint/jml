@@ -156,8 +156,8 @@
 	async function jml(node, json, path, params, par) {
 		
 		path = path.replaceAll(/__\d+\./g, ".").replaceAll(/__\d+/g, "");
-		if (params?.include) if (!params.include.includes(path) && !(params.include.slice(-1)[0].includes(".*") && path.includes(params.include.slice(-1)[0].split("*")[0]))) node.remove();
-		if (params?.exclude) if (params.exclude.includes(path)) node.remove();
+		if (params?.include) if (!params.include.includes(path) && !(params.include.slice(-1)[0].includes(".*") && path.includes(params.include.slice(-1)[0].split("*")[0]))) { node.remove(); return; }
+		if (params?.exclude) if (params.exclude.includes(path)) { node.remove(); return; }
 		if (params.modifier) if (params.modifier.selector == path) { json = window[params.modifier.func](json, ...params.modifier.args); }
 		let limit = params.limit ? parseInt(params.limit, 10) : -1;
 		
