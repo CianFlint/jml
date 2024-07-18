@@ -21,7 +21,7 @@ Include this script in the html head
 | tsrc | use instead of `src` in `each` loops to prevent console errors |
 
 ### JSON Selectors
-The `include` and `exclude` attributes support multi-path and single path selectors whereas the `each` and `modifier` attributes only support single path selectors. If the `include` attribute's selector is incomplete and points to a JSON object, the child fields remain part of the scope but will not be rendered, however they can still accessed through the `each` attribute
+The `include` and `exclude` attributes support multi-path and single path selectors whereas the `each` and `modifier` attributes only support single path selectors. If the `include` attribute's selector is incomplete and points to a JSON object, the child fields remain part of the scope but will not be rendered, however can still be accessed through the `each` attribute
 | Selector | Type | Description |
 | --- | --- | --- |
 | `<key>` | single | any json object field name e.g. `users` |
