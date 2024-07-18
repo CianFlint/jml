@@ -7,14 +7,20 @@ var trigger;
 	  
 	});
 
+	trigger = getJSON;
+	let trigger_delay = [];
 	async function getJSON(label = null) {
 		
-		if (label) for (let ele of document.querySelectorAll("[trigger="+label+"]")) ele.removeAttribute("trigger");
+		if (label && document.querySelectorAll("[each][trigger='{index}']").length && !document.querySelectorAll("[trigger='"+label+"']").length) {
+			if (!(label in trigger_delay)) trigger_delay.push(label);
+			return;
+		}
+		if (label) for (let ele of document.querySelectorAll("[trigger='"+label+"']")) ele.removeAttribute("trigger");
+		for (let ele of document.querySelectorAll("[get],[json]")) ele.style.visibility = "hidden";
 		for (let ele of document.querySelectorAll("[get]")) {
 			
-			ele.style.visibility = "hidden";
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
-			try { for (let e of ele.querySelectorAll("[trigger="+ele.getAttribute("trigger")+"] > *")) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
+			try { for (let e of ele.querySelectorAll("[trigger='"+ele.getAttribute("trigger")+"'] > *")) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
 			if (ele.hasAttribute("trigger")) continue;
 			for (let e of ele.querySelectorAll("[loading]")) { e.style.visibility = "visible"; }
 			let data = await fetchAsync(ele.getAttribute("get"));
@@ -26,9 +32,8 @@ var trigger;
 		
 		for (let ele of document.querySelectorAll("[json]")) {
 			
-			ele.style.visibility = "hidden";
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
-			try { for (let e of ele.querySelectorAll("[trigger="+ele.getAttribute("trigger")+"] > *").reverse()) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
+			try { for (let e of ele.querySelectorAll("[trigger='"+ele.getAttribute("trigger")+"'] > *").reverse()) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
 			if (ele.hasAttribute("trigger")) continue;
 			for (let e of ele.querySelectorAll("[loading]")) { e.style.visibility = "visible"; }
 			try {
@@ -39,7 +44,6 @@ var trigger;
 			} catch {}
 			
 		}
-		trigger = getJSON;
 		
 		await fetchAsync("");
 		let save_this = [];
@@ -62,6 +66,15 @@ var trigger;
 		for (let ele of document.querySelectorAll(":not([trigger]) > [loading]")) { ele.remove(); }
 		for (let ele of document.querySelectorAll(":not([trigger]) > [after]")) { ele.parentElement.appendChild(ele); }
 		for (let ele of document.querySelectorAll("[style='']:not([trigger])")) ele.removeAttribute("style");
+		
+		for (let t of trigger_delay) { await getJSON(trigger_delay.pop(trigger_delay.indexOf(t))); }
+		for (let ele of document.querySelectorAll(":not([trigger]) > [loaded]")) {
+			let func = ele.getAttribute("loaded").split(/[()]/);
+			let args = func[1].replaceAll(" ", "").split(",");
+			if (!args[0]) args = [];
+			window[func[0]](...args);
+			ele.removeAttribute("loaded");
+		}
 		
 	}
 
@@ -161,8 +174,8 @@ var trigger;
 			if (params.modifier) if (params.modifier.selector == path) json = window[params.modifier.func](json, ...params.modifier.args);
 			
 			let type = typeof json;
-			if (type === "string" || type === "number") new_node.outerHTML = await new_node.outerHTML.replaceAll(/{this.*?}/g, "{this:"+json+"}").replaceAll("{index}", "_"+index);
-			else new_node.outerHTML = await new_node.outerHTML.replaceAll(/"{this.*?}"/g, "'"+JSON.stringify(json)+"'").replaceAll("{index}", "_"+index);
+			if (type === "string" || type === "number") new_node.outerHTML = await new_node.outerHTML.replaceAll(/{this.*?}/g, "{this:"+json+"}").replaceAll("{index}", index);
+			else new_node.outerHTML = await new_node.outerHTML.replaceAll(/"{this.*?}"/g, "'"+JSON.stringify(json)+"'").replaceAll("{index}", index);
 			
 		}
 		if (params.modifier && used) if (params.modifier.selector == path) delete params.modifier;
