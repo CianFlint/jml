@@ -1,3 +1,4 @@
+var trigger;
 (function() {
 	
 	document.addEventListener("DOMContentLoaded", async () => {
@@ -6,13 +7,16 @@
 	  
 	});
 
-	async function getJSON() {
+	async function getJSON(label = null) {
 		
-		for (let ele of document.querySelectorAll("[loading]")) { ele.style.visibility = "visible"; }
+		if (label) for (let ele of document.querySelectorAll("[trigger="+label+"]")) ele.removeAttribute("trigger");
 		for (let ele of document.querySelectorAll("[get]")) {
 			
 			ele.style.visibility = "hidden";
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
+			try { for (let e of ele.querySelectorAll("[trigger="+ele.getAttribute("trigger")+"] > *")) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
+			if (ele.hasAttribute("trigger")) continue;
+			for (let e of ele.querySelectorAll("[loading]")) { e.style.visibility = "visible"; }
 			let data = await fetchAsync(ele.getAttribute("get"));
 			if (!data) continue;
 			ele.removeAttribute("get");
@@ -24,6 +28,9 @@
 			
 			ele.style.visibility = "hidden";
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
+			try { for (let e of ele.querySelectorAll("[trigger="+ele.getAttribute("trigger")+"] > *").reverse()) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
+			if (ele.hasAttribute("trigger")) continue;
+			for (let e of ele.querySelectorAll("[loading]")) { e.style.visibility = "visible"; }
 			try {
 				let data = JSON.parse(ele.getAttribute("json"));
 				if (!data) continue;
@@ -32,20 +39,29 @@
 			} catch {}
 			
 		}
+		trigger = getJSON;
 		
 		await fetchAsync("");
+		let save_this = [];
+		for (let ele of document.querySelectorAll("[trigger] > *")) save_this.push(ele.parentElement.innerHTML);
 		document.body.innerHTML = document.body.innerHTML.replace(/get="{this:(.+?)}"/gm, "get='$1'");
-		if (document.querySelectorAll("[get]").length) await getJSON();
+		if (document.querySelectorAll("[get]").length - document.querySelectorAll("[get][trigger]").length) await getJSON();
 		document.body.innerHTML = document.body.innerHTML.replace(/{this:(.+?)}/gm, "$1");
+		let index = 0;
+		for (let ele of document.querySelectorAll("[trigger] > *")) {
+			if (ele.parentElement) ele.parentElement.innerHTML = save_this[index];
+			index++;
+		}
+		
 		for (let last of document.querySelectorAll(".row_last")) last.remove();
-		for (let img of document.querySelectorAll("[tsrc]")) { img.setAttribute("src", img.getAttribute("tsrc")); img.removeAttribute("tsrc") }
-		for (let ele of document.querySelectorAll("[visibility]")) {
+		for (let img of document.querySelectorAll(":not([trigger]) > [tsrc]")) { img.setAttribute("src", img.getAttribute("tsrc")); img.removeAttribute("tsrc") }
+		for (let ele of document.querySelectorAll("[visibility]:not([trigger])")) {
 			if (ele.getAttribute("visibility") != "hidden") ele.style.visibility = "";
 			ele.removeAttribute("visibility");
 		}
-		for (let ele of document.querySelectorAll("[loading]")) { ele.remove(); }
-		for (let ele of document.querySelectorAll("[after]")) { ele.parentElement.appendChild(ele); }
-		for (let ele of document.querySelectorAll("[style='']")) ele.removeAttribute("style");
+		for (let ele of document.querySelectorAll(":not([trigger]) > [loading]")) { ele.remove(); }
+		for (let ele of document.querySelectorAll(":not([trigger]) > [after]")) { ele.parentElement.appendChild(ele); }
+		for (let ele of document.querySelectorAll("[style='']:not([trigger])")) ele.removeAttribute("style");
 		
 	}
 
@@ -61,7 +77,7 @@
 		ele.removeAttribute("limit");
 		modifier(ele, data, params);
 		jml(ele, data, "", params, ele);
-		for (let each of ele.querySelectorAll("[each]")) each.remove();
+		for (let each of ele.querySelectorAll(":not([trigger]) > [each]")) each.remove();
 		
 	}
 
@@ -132,7 +148,7 @@
 		
 	}
 
-	async function each(node, json, path, params, par) {
+	async function each(node, json, path, params, par, index) {
 		
 		let used = false;
 		for (let each of par.querySelectorAll("[each]")) {
@@ -145,15 +161,15 @@
 			if (params.modifier) if (params.modifier.selector == path) json = window[params.modifier.func](json, ...params.modifier.args);
 			
 			let type = typeof json;
-			if (type === "string" || type === "number") new_node.outerHTML = await new_node.outerHTML.replaceAll(/{this.*?}/g, "{this:"+json+"}");
-			else new_node.outerHTML = await new_node.outerHTML.replaceAll(/"{this.*?}"/g, "'"+JSON.stringify(json)+"'");
+			if (type === "string" || type === "number") new_node.outerHTML = await new_node.outerHTML.replaceAll(/{this.*?}/g, "{this:"+json+"}").replaceAll("{index}", "_"+index);
+			else new_node.outerHTML = await new_node.outerHTML.replaceAll(/"{this.*?}"/g, "'"+JSON.stringify(json)+"'").replaceAll("{index}", "_"+index);
 			
 		}
 		if (params.modifier && used) if (params.modifier.selector == path) delete params.modifier;
 		
 	}
 
-	async function jml(node, json, path, params, par) {
+	async function jml(node, json, path, params, par, index = 0) {
 		
 		path = path.replaceAll(/__\d+\./g, ".").replaceAll(/__\d+/g, "");
 		if (params?.include) if (!params.include.includes(path) && !(params.include.slice(-1)[0].includes(".*") && path.includes(params.include.slice(-1)[0].split("*")[0]))) { node.remove(); return; }
@@ -170,9 +186,9 @@
 				node.after(span);
 				node.remove();
 			}
-		}
-		else if (json) {
+		} else if (json) {
 			if (json.length) {
+				let i = 0;
 				if (params.modifier) if (params.modifier.selector == path) delete params.modifier;
 				for (let row of json) {
 					
@@ -180,14 +196,15 @@
 					node.insertAdjacentHTML("beforeend", "<div class='row'></div>");
 					let nodes = node.querySelectorAll(".row");
 					let next_node = nodes[nodes.length-1];
-					jml(next_node, row, path, params, par);
+					jml(next_node, row, path, params, par, index+i);
 					if (limit == 1) {
 						node.insertAdjacentHTML("beforeend", "<div class='row_last'></div>");
 						nodes = node.querySelectorAll(".row_last");
 						next_node = nodes[nodes.length-1];
-						jml(next_node, row, path, params, par);
+						jml(next_node, row, path, params, par, index+i);
 					}
 					limit--;
+					i++;
 					
 				}
 			} else {
@@ -198,7 +215,7 @@
 					node.insertAdjacentHTML("beforeend", "<div class='"+k+key+"'></div>");
 					let nodes = node.querySelectorAll("."+key);
 					let next_node = nodes[nodes.length-1];
-					each(next_node, json[key], path+"."+key, params, par);
+					each(next_node, json[key], path+"."+key, params, par, index);
 					jml(next_node, json[key], (path ? path+"."+key : key), params, par);
 					
 				}
@@ -240,12 +257,8 @@ function sortArray(data, key, desc = false) {
 			return 0;
 		});
 	}
-	if (type == "number") {
-		data.sort((a, b) => a[key] - b[key]);
-	}
-	if (type == "object") {
-		data.sort((a, b) => a[key].length - b[key].length);
-	}
+	if (type == "number") data.sort((a, b) => a[key] - b[key]);
+	if (type == "object") data.sort((a, b) => a[key].length - b[key].length);
 	if (desc) data = data.reverse();
 	return data;
 	
