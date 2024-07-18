@@ -15,9 +15,9 @@ Include this script in the html head
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in method to modify the json |
 | trigger | load json only when the trigger function is executed with label |
-| visibility | overwrites initial visibility style for the element |
-| loading | makes an element only visible during the loading phase |
 | loaded | call a function after the html is finished rendering |
+| loading | element is only visible during the loading phase |
+| visibility | overwrites initial visibility style for the element |
 | after | render nested element after the generated html |
 | tsrc | use instead of `src` in `each` loops to prevent console errors |
 
