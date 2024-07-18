@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@cc13dd7/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@24b4daf/jml.js"></script>
 ```
 
 ### HTML Attributes
@@ -14,6 +14,7 @@ Include this script in the html head
 | each | generate additional html for each occurence of a field |
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in method to modify the json |
+| trigger | load json only when trigger function is executed with label |
 | visibility | overwrites initial visibility style for the element |
 | loading | makes an element only visible during the loading phase |
 | after | render nested element after the generated html |
@@ -33,6 +34,7 @@ The `include` and `exclude` attributes support multi-path and single path select
 | Function | Paramaters | Description |
 | --- | --- | --- |
 | nodeIndex() | data, key | returns the index of the specified `key` |
+| trigger() | label | load json for element with corresponding `label` value in the `trigger` attribute |
 
 ### Built-in Modifiers
 | Method | Paramaters | Optional | Description |
