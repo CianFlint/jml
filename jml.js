@@ -22,7 +22,7 @@ var trigger;
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
 			try { for (let e of ele.querySelectorAll("[trigger='"+ele.getAttribute("trigger")+"'] > *")) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
 			if (ele.hasAttribute("trigger")) continue;
-			for (let e of ele.querySelectorAll("[loading]")) { e.style.visibility = "visible"; }
+			for (let e of ele.querySelectorAll(":not([trigger]) > [loading]")) { e.style.visibility = "visible"; }
 			let data = await fetchAsync(ele.getAttribute("get"));
 			if (!data) continue;
 			ele.removeAttribute("get");
@@ -35,7 +35,7 @@ var trigger;
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
 			try { for (let e of ele.querySelectorAll("[trigger='"+ele.getAttribute("trigger")+"'] > *").reverse()) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
 			if (ele.hasAttribute("trigger")) continue;
-			for (let e of ele.querySelectorAll("[loading]")) { e.style.visibility = "visible"; }
+			for (let e of ele.querySelectorAll(":not([trigger]) > [loading]")) { e.style.visibility = "visible"; }
 			try {
 				let data = JSON.parse(ele.getAttribute("json"));
 				if (!data) continue;
