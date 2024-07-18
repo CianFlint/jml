@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@24b4daf/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@c15cd44/jml.js"></script>
 ```
 
 ### HTML Attributes
@@ -14,9 +14,10 @@ Include this script in the html head
 | each | generate additional html for each occurence of a field |
 | limit | limits the number of rows to generate html from |
 | modifier | execute a custom or built-in method to modify the json |
-| trigger | load json only when trigger function is executed with label |
+| trigger | load json only when the trigger function is executed with label |
 | visibility | overwrites initial visibility style for the element |
 | loading | makes an element only visible during the loading phase |
+| loaded | call a function after the html is finished rendering |
 | after | render nested element after the generated html |
 | tsrc | use instead of `src` in `each` loops to prevent console errors |
 
