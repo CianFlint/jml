@@ -1,7 +1,7 @@
 # How to use
 Include this script in the html head
 ```html
-<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@5df67e0/jml.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@c134c6b/jml.js"></script>
 ```
 
 ### HTML Attributes
@@ -44,8 +44,7 @@ The `include` and `exclude` attributes support multi-path and single path select
 | sortArray() | selector, key | desc=false | sort an array of objects by a key with field values of string, number, or array length by either ascending or descending |
 | omitParent() | selector, key |  | delete a parent node while maintaining the children e.g. `omitParent(users,name)` modifies `users.name.firstname` to `users.firstname` |
 | renameNode() | selector, key, rename |  | rename a node e.g. `renameNode(user.name,lastname,surname)` modifies `user.name.lastname` to `user.name.surname` |
-| toIndex() | selector, key | index=0 | move to a specified `index` under the parent node, negative indexes are also supported |
-| multiIndex() | selector, keys | index=0 | move array of `keys` to a specified `index` under the parent node |
+| toIndex() | selector, key | index=0 | move to a specified `index` under the parent node, negative indexes are supported and the `key` paramater accepts array inputs |
 ...
 
 *You can contribute to this project by extending the list of built-in modifiers*
