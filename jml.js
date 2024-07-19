@@ -329,6 +329,11 @@ function renameNode(data, key, rename) {
 
 function toIndex(data, key, index = 0) {
 	
+	if (typeof key == "object") {
+		for (let k of key.reverse()) toIndex(data, k, index);
+		return data;
+	}
+	
 	let i = -1;
 	let d = {...data};
 	let found = false;
@@ -351,12 +356,6 @@ function toIndex(data, key, index = 0) {
 	
 }
 
-function multiIndex(data, keys, index = 0) {
-	
-	for (let key of keys.reverse()) toIndex(data, key, index);
-	return data;
-	
-}
 
 
 /* Helper Functions */
