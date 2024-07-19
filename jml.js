@@ -22,7 +22,7 @@ var trigger;
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
 			try { for (let e of ele.querySelectorAll("[trigger='"+ele.getAttribute("trigger")+"'] > *")) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
 			if (ele.hasAttribute("trigger")) continue;
-			for (let e of ele.querySelectorAll(":not([trigger]) > [loading]")) { e.style.visibility = "visible"; }
+			for (let e of ele.querySelectorAll(":not([trigger]) > [loading]")) e.style.visibility = "visible";
 			let data = await fetchAsync(ele.getAttribute("get"));
 			if (!data) continue;
 			ele.removeAttribute("get");
@@ -35,7 +35,7 @@ var trigger;
 			if (ele.getAttribute("visibility") != "hidden") ele.setAttribute("visibility", "");
 			try { for (let e of ele.querySelectorAll("[trigger='"+ele.getAttribute("trigger")+"'] > *").reverse()) if (!e.hasAttribute("trigger")) e.setAttribute("trigger", ele.getAttribute("trigger")); } catch {}
 			if (ele.hasAttribute("trigger")) continue;
-			for (let e of ele.querySelectorAll(":not([trigger]) > [loading]")) { e.style.visibility = "visible"; }
+			for (let e of ele.querySelectorAll(":not([trigger]) > [loading]")) e.style.visibility = "visible";
 			try {
 				let data = JSON.parse(ele.getAttribute("json"));
 				if (!data) continue;
@@ -58,16 +58,25 @@ var trigger;
 		}
 		
 		for (let last of document.querySelectorAll(".row_last")) last.remove();
-		for (let img of document.querySelectorAll(":not([trigger]) > [tsrc]")) { img.setAttribute("src", img.getAttribute("tsrc")); img.removeAttribute("tsrc") }
+		for (let img of document.querySelectorAll(":not([trigger]) > [tsrc]")) {
+			img.setAttribute("src", img.getAttribute("tsrc"));
+			img.removeAttribute("tsrc");
+		}
 		for (let ele of document.querySelectorAll("[visibility]:not([trigger])")) {
 			if (ele.getAttribute("visibility") != "hidden") ele.style.visibility = "";
 			ele.removeAttribute("visibility");
 		}
-		for (let ele of document.querySelectorAll(":not([trigger]) > [loading]")) { ele.remove(); }
-		for (let ele of document.querySelectorAll(":not([trigger]) > [after]")) { ele.parentElement.appendChild(ele); }
+		
+		for (let ele of document.querySelectorAll(":not([trigger]) > [loading]")) ele.remove();
+		for (let ele of document.querySelectorAll(":not([trigger]) > [after]")) {
+			let attr = ele.getAttribute("after");
+			if (!attr) ele.parentElement.appendChild(ele);
+			else ele.parentElement.querySelector("[class='"+attr+"']").after(ele);
+			ele.removeAttribute("after");
+		}
 		for (let ele of document.querySelectorAll("[style='']:not([trigger])")) ele.removeAttribute("style");
 		
-		for (let t of trigger_delay) { await getJSON(trigger_delay.pop(trigger_delay.indexOf(t))); }
+		for (let t of trigger_delay) await getJSON(trigger_delay.pop(trigger_delay.indexOf(t)));
 		for (let ele of document.querySelectorAll(":not([trigger]) > [loaded]")) {
 			let func = ele.getAttribute("loaded").split(/[()]/);
 			let args = func[1].replaceAll(" ", "").split(",");
