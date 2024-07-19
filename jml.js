@@ -351,6 +351,13 @@ function toIndex(data, key, index = 0) {
 	
 }
 
+function multiIndex(data, keys, index = 0) {
+	
+	for (let key of keys.reverse()) toIndex(data, key, index);
+	return data;
+	
+}
+
 
 /* Helper Functions */
 
