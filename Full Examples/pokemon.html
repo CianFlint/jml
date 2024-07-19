@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pokemon</title>
+	<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@b377295/jml.js"></script> <!-- Use Latest Version -->
+	<link rel="stylesheet" href="pokemon.css">
+</head>
+<body>
+
+	<script>
+		
+		function omitTypes(data) {
+		
+			for (let x of data.types) renameNode(x.type, "name", "type");
+			omitParent(data.types, "type");
+			omitParent(data, "types");
+			return data;
+		
+		}
+		
+	</script>
+
+	<div
+		get="https://pokeapi.co/api/v2/pokemon"
+		include="results.name"
+		class="pokemon"
+	>
+		<span loading>Loading...</span>
+		<div
+			each="results.url"
+			get="{this}"
+			include="type,sprites"
+			modifier="omitTypes()"
+		>
+			<img
+				each="sprites.front_default"
+				tsrc="{this}"
+			>
+		</div>
+	</div>
+
+</body>
+</html>

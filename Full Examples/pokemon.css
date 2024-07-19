@@ -1,0 +1,50 @@
+body {
+	background: #beefca;
+}
+
+.pokemon {
+    width: 800px;
+    margin: auto;
+    padding: 10px;
+	font-family: calibri;
+	margin-top: 50px;
+}
+
+.results {
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+}
+
+.results > .row {
+	border: 2px solid #b796c5;
+	border-radius: 6px;
+	margin: 7px;
+	padding: 5px;
+	width: 120px;
+	background: white;
+}
+
+.results > .row .name {
+	text-transform: uppercase;
+	font-weight: bold;
+	padding-left: 3px;
+}
+
+.results > .row .sprites img {
+	margin: auto;
+	display: block;
+	margin-top: 8px;
+	margin-bottom: 12px;
+}
+
+.results > .row .type {
+	display: inline-block;
+	background: #b796c5;
+	border: 1px solid #b796c5;
+	border-radius: 3px;
+	padding: 2px 7px;
+	margin-right: 3px;
+	font-size: 13px;
+	color: white;
+}

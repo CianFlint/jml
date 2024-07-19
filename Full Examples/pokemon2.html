@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Pokemon 2</title>
+	<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@b377295/jml.js"></script> <!-- Use Latest Version -->
+	<link rel="stylesheet" href="pokemon2.css">
+</head>
+<body>
+
+	<script>
+		
+		function stats(data) {
+		
+			data.height += "0cm";
+			let w = ""+data.weight;
+			data.weight = w.slice(0,-1) + (w.slice(-1) != "0" ? "." + w.slice(-1) : "") + "kg";
+			toIndex(data, "types", 0);
+			toIndex(data, "stats", 0);
+			toIndex(data, "sprites", 0);
+			toIndex(data, "name", 0);
+			omitParent(data.stats, "stat");
+			return data;
+		
+		}
+		
+		function display(index = "0") {
+		
+			trigger(index);
+			for (let e of document.querySelectorAll("#display > .results > .row")) e.style.display = "none";
+			document.getElementById(index).parentElement.style.display = "";
+		
+		}
+		
+	</script>
+
+	<div
+		id="display"
+		get="https://pokeapi.co/api/v2/pokemon"
+		include="results"
+		class="pokemon"
+		loaded="display(0)"
+	>
+		<div
+			id="{index}"
+			each="results.url"
+			get="{this}"
+			trigger="{index}"
+			include="types.type,sprites,stats.name,height,weight,name"
+			modifier="stats()"
+		>
+			<span loading class="loader"></span>
+			<img each="sprites.front_default" tsrc="{this}">
+			<span each="types.type.name">{this}</span>
+			<progress each="stats.base_stat" value="{this}" max="255"></progress>
+			<br after="stats">
+		</div>
+	</div>
+	
+	<div
+		id="selector"
+		get="https://pokeapi.co/api/v2/pokemon"
+		include="results"
+		class="pokemon"
+		modifier="numberedList(results,name)"
+	>
+		<div
+			each="results.name"
+			onclick="display('{index}')"
+			class="name"
+		>{this}</div>
+	</div>
+
+</body>
+</html>
