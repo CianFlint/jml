@@ -45,6 +45,7 @@ The `include` and `exclude` attributes support multi-path and single path select
 | omitParent() | selector, key |  | delete a parent node while maintaining the children e.g. `omitParent(users,name)` modifies `users.name.firstname` to `users.firstname` |
 | renameNode() | selector, key, rename |  | rename a node e.g. `renameNode(user.name,lastname,surname)` modifies `user.name.lastname` to `user.name.surname` |
 | toIndex() | selector, key | index=0 | move to a specified `index` under the parent node, negative indexes are also supported |
+| multiIndex() | selector, keys | index=0 | move array of `keys` to a specified `index` under the parent node |
 ...
 
 *You can contribute to this project by extending the list of built-in modifiers*
