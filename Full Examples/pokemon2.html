@@ -2,7 +2,7 @@
 <html>
 <head>
 	<title>Pokemon 2</title>
-	<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@b377295/jml.js"></script> <!-- Use Latest Version -->
+	<script src="https://cdn.jsdelivr.net/gh/CianFlint/jml@c134c6b/jml.js"></script> <!-- Use Latest Version -->
 	<link rel="stylesheet" href="pokemon2.css">
 </head>
 <body>
@@ -14,10 +14,7 @@
 			data.height += "0cm";
 			let w = ""+data.weight;
 			data.weight = w.slice(0,-1) + (w.slice(-1) != "0" ? "." + w.slice(-1) : "") + "kg";
-			toIndex(data, "types", 0);
-			toIndex(data, "stats", 0);
-			toIndex(data, "sprites", 0);
-			toIndex(data, "name", 0);
+			toIndex(data, ["name", "sprites", "stats", "types"], 0);
 			omitParent(data.stats, "stat");
 			return data;
 		
